@@ -1,10 +1,12 @@
-import React from 'react';
-import styled from 'styled-components/macro';
+import React from "react";
+import styled from "styled-components/macro";
 
-import { COLORS, WEIGHTS } from '../../constants';
-import Logo from '../Logo';
-import SuperHeader from '../SuperHeader';
-import MobileMenu from '../MobileMenu';
+import { COLORS, QUERIES, WEIGHTS } from "../../constants";
+import Logo from "../Logo";
+import SuperHeader from "../SuperHeader";
+import MobileMenu from "../MobileMenu";
+import { Menu, Search, ShoppingBag } from "react-feather";
+import UnstyledButton from "../UnstyledButton/UnstyledButton";
 
 const Header = () => {
   const [showMobileMenu, setShowMobileMenu] = React.useState(false);
@@ -26,15 +28,28 @@ const Header = () => {
           <NavLink href="/new">New&nbsp;Releases</NavLink>
           <NavLink href="/men">Men</NavLink>
           <NavLink href="/women">Women</NavLink>
+          <NavLink href="/women">Women</NavLink>
+          <NavLink href="/kids">Kids</NavLink>
           <NavLink href="/kids">Kids</NavLink>
           <NavLink href="/collections">Collections</NavLink>
+          <NavLink href="/collections">Collections</NavLink>
         </Nav>
+        <MobileNav>
+          <ShoppingBag size={24} />
+          <Search size={24} />
+          <UnstyledButton onClick={() => setShowMobileMenu(true)}>
+            <Menu size={24} />
+          </UnstyledButton>
+        </MobileNav>
         <Side />
       </MainHeader>
 
       <MobileMenu
         isOpen={showMobileMenu}
-        onDismiss={() => setShowMobileMenu(false)}
+        onDismiss={() => {
+          console.log("dismissed");
+          setShowMobileMenu(false);
+        }}
       />
     </header>
   );
@@ -46,16 +61,33 @@ const MainHeader = styled.div`
   padding: 18px 32px;
   height: 72px;
   border-bottom: 1px solid ${COLORS.gray[300]};
+  overflow-x: auto;
+
+  @media ${QUERIES.phoneAndSmaller} {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
 `;
 
 const Nav = styled.nav`
   display: flex;
-  gap: 48px;
-  margin: 0px 48px;
+  gap: clamp(1rem, 7.2vw - 3.5rem, 3rem);
+  margin: 0px clamp(0rem, 12vw - 8rem, 3rem) 0px
+    clamp(1rem, 7.2vw - 3.5rem, 3rem);
+
+  @media ${QUERIES.tabletAndSmaller} {
+    display: none;
+  }
 `;
 
 const Side = styled.div`
   flex: 1;
+
+  @media ${QUERIES.tabletAndSmaller} {
+    &:nth-of-type(2) {
+      display: none;
+    }
+  }
 `;
 
 const NavLink = styled.a`
@@ -67,6 +99,16 @@ const NavLink = styled.a`
 
   &:first-of-type {
     color: ${COLORS.secondary};
+  }
+`;
+
+const MobileNav = styled.nav`
+  display: none;
+  gap: clamp(1rem, 8vw - 1rem, 2.5rem);
+  margin: 0 16px;
+
+  @media ${QUERIES.tabletAndSmaller} {
+    display: flex;
   }
 `;
 
